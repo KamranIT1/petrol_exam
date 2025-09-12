@@ -27,11 +27,62 @@ entry_text3 = tk.StringVar()
 benzin_var = tk.StringVar()
 benzin_var1 = tk.StringVar(value=" ")
 benzin_var2 = tk.StringVar()
-
+admin_var = tk.StringVar()
+admin_var2 = tk.StringVar()
 hot_text = tk.StringVar(value="1.10")
 burger_text = tk.StringVar(value="2.20")
 kartof_text = tk.StringVar(value="3.40")
 cola_text = tk.StringVar(value="1.50")
+class admin:
+    def __init__(self, root, admin_var, admin_var2):
+        self.root = root
+        self.admin_var = admin_var
+        self.admin_var2 = admin_var2
+
+        self.my_frame = tk.Frame(self.root)
+        self.my_frame.grid(row=3, column=9, padx=10, pady=10)
+        
+
+
+    def yoxla(self):
+        self.my_frame = tk.Frame(self.root)
+        self.my_frame.grid(row=3, column=9)
+        tk.Label(self.root,text="Setting").grid(row=1,padx=300,column=9)
+
+        tk.Button(self.my_frame, text="Admin Panel",command=self.show_login).grid(row=0, column=0, pady=10)
+    def check_login(self):
+        try:
+            with open("admin.txt", "r") as f:
+                files = f.readlines()
+            username = files[0].strip()
+            password = files[1].strip()
+
+            if self.admin_var.get() != username or self.admin_var2.get() != password:
+                raise NameError
+        except NameError:
+            messagebox.showerror("Xeta", "Yanlis username ve ya sifre")
+        else:
+            messagebox.showinfo("INFO", "Login succesfull")
+
+
+
+    def show_login(self):
+     second_root = tk.Toplevel(self.root)
+     second_root.title("Admin Panel")
+     tk.Label(second_root, text="Username").grid(row=0, column=0, padx=500)
+     tk.Entry(second_root, textvariable=self.admin_var).grid(row=1, column=0, padx=500)
+
+     tk.Label(second_root, text="Password").grid(row=2, column=0, padx=500)
+     tk.Entry(second_root, textvariable=self.admin_var2, show="*").grid(row=3, column=0, padx=500)
+
+
+     tk.Button(second_root, text="Daxil ol", command=self.check_login).grid(row=4, column=0, pady=5,padx=500)
+
+app = admin(root,admin_var,admin_var2)
+app.yoxla()
+
+
+
 
 class Food:
     def __init__(self, hot_have, burger_have, kartof_have, cola_have,
@@ -130,7 +181,7 @@ def hesablak():
 
 def umumi_mebleg(): 
  
-#  try:
+ try:
     
     yanacaq_mebleg = entry_text3.get()
     kafe_mebleg = netice_text.get()
@@ -151,8 +202,8 @@ def umumi_mebleg():
 
 
 
-#  except ValueError:
-#     messagebox.showerror("Xeta","Hesablana bilmedi")
+ except ValueError:
+    messagebox.showerror("Xeta","Hesablana bilmedi")
 
 
 
@@ -186,8 +237,9 @@ def qebz_penceresi(toplam):
     qr_label = tk.Label(pencere, image=qr_code, bg="white")
     qr_label.image = qr_code 
     qr_label.grid(row=11,column=20,padx=373)
-    file = open("Istifadeci.txt","w")
-    file.write(f"{message}")
+    with open(f"{tarix}", "a") as f:
+       f.write(f"{message}")
+    
 
 def hesabla_ve_goster():
     cafe.hesablaz()
@@ -202,6 +254,7 @@ def hesabla_ve_goster():
       else:
        messagebox.showwarning("Xeta", "Ugursuz emeliyyat")
     tk.Label(root,text=toplam1)
+ 
 
 
 
@@ -219,11 +272,11 @@ tk.Label(root, text="Benzin secimi",font=("Arial",12)).grid(row=3, column=0, col
 
 tk.Radiobutton(root, text="Manat", variable=benzin_var1, value="Manat", command=manat_sec).grid(row=4, column=0)
 tk.Entry(root, textvariable=entry_text2, width=10).grid(row=4, column=1)
-tk.Label(root, text="AZN").grid(row=4, column=0,columnspan=5)
+tk.Label(root, text="AZN").grid(row=4, column=0,columnspan=6)
 
 tk.Radiobutton(root, text="Litr", variable=benzin_var1, value="Litr", command=litr_sec).grid(row=5, column=0)
 tk.Entry(root, textvariable=entry_text3, width=10).grid(row=5, column=1)
-tk.Label(root, text="L").grid(row=5, column=0,columnspan=5)
+tk.Label(root, text="L").grid(row=5, column=0,columnspan=6)
 
 tk.Button(root, text="Petrol Hesabla", command=cafe.hesablaz).grid(row=6, column=1, pady=5)
 tk.Label(root, textvariable=label_text).grid(row=7, column=1, pady=5)
