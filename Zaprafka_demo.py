@@ -1,9 +1,15 @@
 import tkinter as tk
-from tkinter import *
+# from tkinter import *
 from datetime import datetime
 from tkinter import ttk
 from tkinter import messagebox
 import random
+global_qiymetler = {
+        "AI92": 1.10,
+        "AI95": 1.60,
+        "AI98": 2.30,
+        "dizel": 1.00
+}
 
 
 root = tk.Tk()
@@ -21,9 +27,10 @@ label_text1 = tk.StringVar()
 label_text2 = tk.StringVar()
 label_text3 = tk.StringVar()
 label_text4 = tk.StringVar()
-entry_text1 = tk.StringVar()
 entry_text2 = tk.StringVar()
 entry_text3 = tk.StringVar()
+entry_text4 = tk.StringVar()
+entry_text1 = tk.StringVar()
 benzin_var = tk.StringVar()
 benzin_var1 = tk.StringVar(value=" ")
 benzin_var2 = tk.StringVar()
@@ -39,47 +46,135 @@ class admin:
         self.admin_var = admin_var
         self.admin_var2 = admin_var2
 
-        self.my_frame = tk.Frame(self.root)
-        self.my_frame.grid(row=3, column=9, padx=10, pady=10)
+
+        
+
         
 
 
-    def yoxla(self):
+    def adminpan(self):
         self.my_frame = tk.Frame(self.root)
         self.my_frame.grid(row=3, column=9)
         tk.Label(self.root,text="Setting").grid(row=1,padx=300,column=9)
-
         tk.Button(self.my_frame, text="Admin Panel",command=self.show_login).grid(row=0, column=0, pady=10)
+        tk.Button(root,text="Cixmaq",command=self.log_out).grid(row=4, column=9, pady=6)
     def check_login(self):
+
         try:
             with open("admin.txt", "r") as f:
                 files = f.readlines()
             username = files[0].strip()
             password = files[1].strip()
+            
 
             if self.admin_var.get() != username or self.admin_var2.get() != password:
-                raise NameError
+            
+             raise NameError
         except NameError:
             messagebox.showerror("Xeta", "Yanlis username ve ya sifre")
         else:
-            messagebox.showinfo("INFO", "Login succesfull")
-
+          messagebox.showinfo("INFO", "Login succesfull")
+          self.login_frame.destroy()
+          self.dashboard_frame = tk.Frame(second_root)
+          self.dashboard_frame.grid(row=0, column=0, padx=20, pady=20)
+          tk.Button(self.dashboard_frame,text="Qiymeti tesdiqle",command=self.qiymeti_tesdiqle).grid(row=12,column=4)
+ 
+          tk.Label(self.dashboard_frame, text="Welcome to Admin Panel!").grid(row=0, column=0,columnspan=20)
+          tk.Button(self.dashboard_frame, text="Benzin qiymetlerini deyis",command=self.benzini_deyis).grid(row=1, column=0, columnspan=9,padx=500)
+        
+ 
 
 
     def show_login(self):
+     global second_root
      second_root = tk.Toplevel(self.root)
      second_root.title("Admin Panel")
-     tk.Label(second_root, text="Username").grid(row=0, column=0, padx=500)
-     tk.Entry(second_root, textvariable=self.admin_var).grid(row=1, column=0, padx=500)
 
-     tk.Label(second_root, text="Password").grid(row=2, column=0, padx=500)
-     tk.Entry(second_root, textvariable=self.admin_var2, show="*").grid(row=3, column=0, padx=500)
+     self.login_frame = tk.Frame(second_root)
+     self.login_frame.grid(row=0, column=0, padx=20, pady=20)
+
+     tk.Label(self.login_frame, text="Username").grid(row=0, column=0)
+     tk.Entry(self.login_frame, textvariable=self.admin_var).grid(row=1, column=0)
+
+     tk.Label(self.login_frame, text="Password").grid(row=2, column=0)
+     tk.Entry(self.login_frame, textvariable=self.admin_var2, show="*").grid(row=3, column=0)
+
+     tk.Button(self.login_frame, text="Login", command=self.check_login).grid(row=4, column=0, pady=10)
+     
+     
+     
+       
 
 
-     tk.Button(second_root, text="Daxil ol", command=self.check_login).grid(row=4, column=0, pady=5,padx=500)
+    
+        
 
-app = admin(root,admin_var,admin_var2)
-app.yoxla()
+      
+
+
+    def benzini_deyis(self):
+     self.entry_text1 = tk.StringVar()
+
+  
+    
+
+
+     tk.Label(self.dashboard_frame,text="Qiymeti yaz").grid(row=2,column=4)
+     tk.Entry(self.dashboard_frame,textvariable=self.entry_text1).grid(row=3,rowspan=4,column=4)
+
+
+     
+     self.qiymetler = {}
+     self.qiymet_var_benzin = tk.BooleanVar(value=0)
+     self.qiymet_var_premium = tk.BooleanVar(value=0)
+     self.qiymet_var_super = tk.BooleanVar(value=0)
+     self.qiymet_var_dizel =  tk.BooleanVar(value=0)
+     tk.Checkbutton(self.dashboard_frame,text="AI92",variable=self.qiymet_var_benzin).grid(row=8,column=4)
+     tk.Checkbutton(self.dashboard_frame,text="AI95",variable=self.qiymet_var_premium).grid(row=9,column=4)
+     tk.Checkbutton(self.dashboard_frame,text="AI98",variable=self.qiymet_var_super).grid(row=10,column=4)
+     tk.Checkbutton(self.dashboard_frame,text="Dizel",variable=self.qiymet_var_dizel).grid(row=11,column=4)
+
+
+
+
+     
+
+
+    def qiymeti_tesdiqle(self):
+     global global_qiymetler
+     qiymet = float(self.entry_text1.get())
+     secilenler = []
+     if self.qiymet_var_benzin.get():
+      global_qiymetler["AI92"] = qiymet
+      secilenler.append("AI92")
+     if self.qiymet_var_premium.get():
+       global_qiymetler["AI95"] = qiymet
+       secilenler.append("AI95")
+     if self.qiymet_var_super.get():
+      global_qiymetler["AI98"] = qiymet
+      secilenler.append("AI98")
+     if self.qiymet_var_dizel.get():
+      global_qiymetler["dizel"] = qiymet
+      secilenler.append("Dizel")
+      print("Yenilənmiş qiymətlər:", global_qiymetler)
+
+     if not secilenler:
+        messagebox.showwarning("Diqqət", "Heç bir benzin növü seçilməyib!")
+        
+     return
+    def log_out(self):
+       root.destroy()
+
+      
+
+
+
+a = admin(root,admin_var,admin_var2)
+a.adminpan()
+
+ 
+
+
 
 
 
@@ -105,16 +200,13 @@ def litr_sec():
     entry_text2.set("")
 
 
+
 def benzin_secimi_et(event):
+    global global_qiymetler
     secim = benzin_var.get()
-    if secim == "AI92":
-        entry_text1.set("1.10")
-    elif secim == "AI95":
-        entry_text1.set("1.60")
-    elif secim == "AI98":
-        entry_text1.set("2.30")
-    elif secim == "dizel":
-        entry_text1.set("1.00")
+    if secim in global_qiymetler:
+        entry_text1.set(str(global_qiymetler[secim]))
+
 
 class Cafe:
     def __init__(self, entry_text1, entry_text2, entry_text3, benzin_var1, label_text):
@@ -187,11 +279,11 @@ def umumi_mebleg():
     kafe_mebleg = netice_text.get()
     yanacaq_mebleg2 = entry_text2.get()
     
-    if yanacaq_mebleg == '':
+    if yanacaq_mebleg == "":
         yanacaq_mebleg = 0
         entry_text3.set(0)
 
-    if yanacaq_mebleg2 == '':
+    if yanacaq_mebleg2 == "":
         yanacaq_mebleg2 = 0
         entry_text2.set(0)
     x = float(yanacaq_mebleg)
