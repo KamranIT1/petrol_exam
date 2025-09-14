@@ -124,8 +124,6 @@ class admin:
      
      
        
-
-
         
 
       
@@ -134,11 +132,9 @@ class admin:
     def benzini_deyis(self):
      self.entry_text1 = tk.StringVar()
      
-  
-
 
      tk.Label(self.dashboard_frame,text="Qiymeti yaz").pack(expand=True,pady=160)
-     tk.Entry(self.dashboard_frame,textvariable=self.entry_text1).place(x=25,y=240)
+     tk.Entry(self.dashboard_frame,textvariable=self.entry_text1).place(x=15,y=240)
 
 
      
@@ -160,25 +156,39 @@ class admin:
 
     def qiymeti_tesdiqle(self):
      global global_qiymetler
+     self.label_text4 = tk.StringVar()
+     if self.entry_text1.get().strip() == "":
+        messagebox.showerror("Xeta","Zehmet olmasa deyer daxil edin")
+        return
      qiymet = float(self.entry_text1.get())
      secilenler = []
-     if self.qiymet_var_benzin.get():
+     if self.qiymet_var_benzin.get() == True:
       global_qiymetler["AI92"] = qiymet
       secilenler.append("AI92")
-     if self.qiymet_var_premium.get():
+      self.label_text4.set(f"{"AI92"} yanacaq novunun qiymeti ugurla deyisdirildi")
+      tk.Label(self.dashboard_frame, textvariable=self.label_text4).pack(expand=True,anchor="center")
+     if self.qiymet_var_premium.get() == True:
        global_qiymetler["AI95"] = qiymet
        secilenler.append("AI95")
-     if self.qiymet_var_super.get():
+       self.label_text4.set(f"{"AI95"} yanacaq novunun qiymeti ugurla deyisdirildi")
+       tk.Label(self.dashboard_frame, textvariable=self.label_text4).pack()
+       
+     if self.qiymet_var_super.get() == True:
       global_qiymetler["AI98"] = qiymet
       secilenler.append("AI98")
-     if self.qiymet_var_dizel.get():
+      self.label_text4.set(f"{"AI98"} yanacaq novunun qiymeti ugurla deyisdirildi")
+      tk.Label(self.dashboard_frame, textvariable=self.label_text4).pack()
+     if self.qiymet_var_dizel.get() == True:
       global_qiymetler["dizel"] = qiymet
       secilenler.append("Dizel")
-      print("Yenilənmiş qiymətlər:", global_qiymetler)
+      self.label_text4.set(f"{"dizel"} yanacaq novunun qiymeti ugurla deyisdirildi")
+      tk.Label(self.dashboard_frame, textvariable=self.label_text4).pack()
 
      if not secilenler:
-        messagebox.showwarning("Diqqət", "Heç bir benzin növü seçilməyib!")
-        
+        messagebox.showwarning("Diqqet", "Hec bir yanacag novu secilmeyib")
+        self.entry_text1.set(" ")
+
+
      return
     def log_out(self):
        root.destroy()
@@ -353,7 +363,7 @@ def qebz_penceresi(toplam):
     pencere.geometry("350x250")
     qebz_nomresi = random.randint(100000,999999)
     tarix = datetime.now().strftime("%d.%m.%Y")
-    saat = datetime.now().strftime("%H:%M")
+    saat = datetime.now().strftime("%H.%M")
     message = f"""
  BEST OIL
 ----------------------------------------------
@@ -374,7 +384,7 @@ def qebz_penceresi(toplam):
     qr_label = tk.Label(pencere, image=qr_code, bg="white")
     qr_label.image = qr_code 
     qr_label.grid(row=11,column=20,padx=373)
-    with open(f"{tarix}", "a") as f:
+    with open(f"{saat}", "a") as f:
        f.write(f"{message}")
     
 
