@@ -1,5 +1,5 @@
 import tkinter as tk
-# from tkinter import *
+from tkinter import *
 from datetime import datetime
 from tkinter import ttk
 from tkinter import messagebox
@@ -13,9 +13,9 @@ global_qiymetler = {
 
 
 root = tk.Tk()
-header = tk.Frame(root, bg="darkblue", height=40)
-header.grid(columnspan=10)
-tk.Label(header, text="Best Oil", bg="darkblue", fg="white", font=("Arial", 14, "bold"),width=120).grid(row=5,column=20)
+header = tk.Frame(root, bg="darkblue")
+header.place(relx=0, rely=0, relwidth=1, height=28)
+tk.Label(header, text="Best Oil", bg="darkblue", fg="white", font=("Arial", 14, "bold"),width=120).pack(fill="x",expand=True)
 root.title("BestOil")
 
 hot_have = tk.BooleanVar()
@@ -53,11 +53,21 @@ class admin:
 
 
     def adminpan(self):
-        self.my_frame = tk.Frame(self.root)
-        self.my_frame.grid(row=3, column=9)
-        tk.Label(self.root,text="Setting").grid(row=1,padx=300,column=9)
-        tk.Button(self.my_frame, text="Admin Panel",command=self.show_login).grid(row=0, column=0, pady=10)
-        tk.Button(root,text="Cixmaq",command=self.log_out).grid(row=4, column=9, pady=6)
+     self.my_frame = tk.Frame(self.root)
+     self.my_frame.place(relx=0.9, rely=0.1, relwidth=0.1, relheight=0.2) 
+
+     
+     
+     tk.Label(self.my_frame, text="Setting").pack(fill="y", expand=True,pady=0)
+     tk.Frame(self.my_frame, height=20).pack()
+     tk.Button(self.my_frame, text="Admin Panel", command=self.show_login,).pack(fill="y",expand=True,pady=10)
+     tk.Button(self.my_frame, text="Cixmaq", command=self.log_out).pack(fill="y", expand=True,pady=10)
+
+
+
+
+
+
     def check_login(self):
 
         try:
@@ -68,6 +78,8 @@ class admin:
             
 
             if self.admin_var.get() != username or self.admin_var2.get() != password:
+             admin_var.set("")
+             admin_var2.set("")
             
              raise NameError
         except NameError:
@@ -76,13 +88,16 @@ class admin:
           messagebox.showinfo("INFO", "Login succesfull")
           self.login_frame.destroy()
           self.dashboard_frame = tk.Frame(second_root)
-          self.dashboard_frame.grid(row=0, column=0, padx=20, pady=20)
-          tk.Button(self.dashboard_frame,text="Qiymeti tesdiqle",command=self.qiymeti_tesdiqle).grid(row=12,column=4)
+          self.dashboard_frame.pack(fill="y", padx=20, expand=True)
+          tk.Label(self.dashboard_frame, text="Welcome to Admin Panel!").pack()
+          tk.Button(self.dashboard_frame, text="Benzin qiymetlerini deyis",command=self.benzini_deyis).pack()
+          
  
-          tk.Label(self.dashboard_frame, text="Welcome to Admin Panel!").grid(row=0, column=0,columnspan=20)
-          tk.Button(self.dashboard_frame, text="Benzin qiymetlerini deyis",command=self.benzini_deyis).grid(row=1, column=0, columnspan=9,padx=500)
+          
         
  
+
+
 
 
     def show_login(self):
@@ -90,23 +105,27 @@ class admin:
      second_root = tk.Toplevel(self.root)
      second_root.title("Admin Panel")
 
+
      self.login_frame = tk.Frame(second_root)
-     self.login_frame.grid(row=0, column=0, padx=20, pady=20)
+     self.login_frame.pack(fill="y",expand=True,padx=2)
 
-     tk.Label(self.login_frame, text="Username").grid(row=0, column=0)
-     tk.Entry(self.login_frame, textvariable=self.admin_var).grid(row=1, column=0)
 
-     tk.Label(self.login_frame, text="Password").grid(row=2, column=0)
-     tk.Entry(self.login_frame, textvariable=self.admin_var2, show="*").grid(row=3, column=0)
+     tk.Label(self.login_frame, text="Username").pack(padx=2,pady=1)
+     tk.Entry(self.login_frame, textvariable=self.admin_var).pack(padx=2,pady=2)
 
-     tk.Button(self.login_frame, text="Login", command=self.check_login).grid(row=4, column=0, pady=10)
+     tk.Label(self.login_frame, text="Password").pack(padx=2,pady=3)
+     tk.Entry(self.login_frame, textvariable=self.admin_var2, show="*").pack(padx=2,pady=4)
+
+     tk.Button(self.login_frame, text="Login", command=self.check_login).pack(padx=2,pady=5,anchor="center")
+     admin_var.set("")
+     admin_var2.set("")      
      
+
      
      
        
 
 
-    
         
 
       
@@ -114,13 +133,12 @@ class admin:
 
     def benzini_deyis(self):
      self.entry_text1 = tk.StringVar()
-
+     
   
-    
 
 
-     tk.Label(self.dashboard_frame,text="Qiymeti yaz").grid(row=2,column=4)
-     tk.Entry(self.dashboard_frame,textvariable=self.entry_text1).grid(row=3,rowspan=4,column=4)
+     tk.Label(self.dashboard_frame,text="Qiymeti yaz").pack(expand=True,pady=160)
+     tk.Entry(self.dashboard_frame,textvariable=self.entry_text1).place(x=25,y=240)
 
 
      
@@ -129,16 +147,16 @@ class admin:
      self.qiymet_var_premium = tk.BooleanVar(value=0)
      self.qiymet_var_super = tk.BooleanVar(value=0)
      self.qiymet_var_dizel =  tk.BooleanVar(value=0)
-     tk.Checkbutton(self.dashboard_frame,text="AI92",variable=self.qiymet_var_benzin).grid(row=8,column=4)
-     tk.Checkbutton(self.dashboard_frame,text="AI95",variable=self.qiymet_var_premium).grid(row=9,column=4)
-     tk.Checkbutton(self.dashboard_frame,text="AI98",variable=self.qiymet_var_super).grid(row=10,column=4)
-     tk.Checkbutton(self.dashboard_frame,text="Dizel",variable=self.qiymet_var_dizel).grid(row=11,column=4)
+     tk.Checkbutton(self.dashboard_frame,text="AI92",variable=self.qiymet_var_benzin).place(x=50,y=80)
+     tk.Checkbutton(self.dashboard_frame,text="AI95",variable=self.qiymet_var_premium).place(x=50,y=110)
+     tk.Checkbutton(self.dashboard_frame,text="AI98",variable=self.qiymet_var_super).place(x=50,y=140)
+     tk.Checkbutton(self.dashboard_frame,text="Dizel",variable=self.qiymet_var_dizel).place(x=50,y=170)
+     tk.Button(self.dashboard_frame,text="Qiymeti tesdiqle",command=self.qiymeti_tesdiqle).pack(expand=True,pady=130,anchor="center")
 
 
 
 
      
-
 
     def qiymeti_tesdiqle(self):
      global global_qiymetler
@@ -216,25 +234,26 @@ class Cafe:
         self.benzin_var1 = benzin_var1
         self.label_text = label_text
     def hesablaz(self):
+     qiymet = float(self.entry_text1.get())  
+     secim1 = self.benzin_var1.get()   
      try:
-         qiymet = float(self.entry_text1.get())  
-         secim1 = self.benzin_var1.get()          
+       
          #litri tapmag ucun
          if secim1 == "Manat":
             manat = float(self.entry_text2.get())
             litr = manat // qiymet
-
             self.label_text.set(f"{litr} L")
             #manati tapmag ucun
          elif secim1 == "Litr":
-            litr = float(self.entry_text3.get())
-            manat  = litr * qiymet
-            self.label_text.set(f"{manat}AZN")
-            tk.Label(root, textvariable=manat)
+          litr = float(self.entry_text3.get())
+          manat  = litr * qiymet
+          self.label_text.set(f"{manat}AZN")
+          tk.Label(root, textvariable=manat)
          else:
-             raise ValueError
+          self.label_text.set("0 AZN")
      except ValueError:
-      messagebox.showerror("Xeta","secim edin")
+      self.label_text.set("0 AZN")
+
 cafe = Cafe(entry_text1, entry_text2, entry_text3, benzin_var1, label_text)
 
 
@@ -262,13 +281,39 @@ def hesablak():
          toplam_cola = 0
     except ValueError:
      messagebox.showinfo("Error","Eded daxil edin")
+    sum_text = toplam_burger + toplam_cola + toplam_hotdog + toplam_kartof
+    netice_text.set(f"{sum_text} AZN")
+def check_select():
+         if hot_have.get() == True:
+          button1.config(state="normal")
+          button2.config(state="disabled")
+          button3.config(state="disabled")
+          button4.config(state="disabled")
 
+         elif burger_have.get():
+          button2.config(state="normal")
+          button1.config(state="disabled")
+          button3.config(state="disabled")
+          button4.config(state="disabled")
+    
+         elif kartof_have.get():
+          button3.config(state="normal")
+          button1.config(state="disabled")
+          button2.config(state="disabled")
+          button4.config(state="disabled")
+
+         elif cola_have.get():
+          button4.config(state="normal")
+          button1.config(state="disabled")
+          button2.config(state="disabled")
+          button3.config(state="disabled")
+
+        
 
 
 
    
-    sum_text = toplam_burger + toplam_cola + toplam_hotdog + toplam_kartof
-    netice_text.set(f"{sum_text} AZN")
+
 
 
 def umumi_mebleg(): 
@@ -339,7 +384,7 @@ def hesabla_ve_goster():
     toplam1 = umumi_mebleg()
 
     #fis cixartma
-    tk.Label(root, text=f"Umumi mebleg: {toplam1} AZN", font=("Arial", 12)).grid(row=8, column=6)
+    tk.Label(root, text=f"Umumi mebleg: {toplam1} AZN", font=("Arial", 12)).place(relx=0.5, rely=0.8, anchor="center")
     if toplam1 is not None:
       if str(toplam1) not in ['" " ', "0", "None"]:
        qebz_penceresi(toplam1)
@@ -352,55 +397,62 @@ def hesabla_ve_goster():
 
 
 
-tk.Label(root, text="Benzin").grid(row=1, column=0, pady=5, padx=5)
+tk.Label(root, text="Benzin").place(x=27,y=80)
 combo = ttk.Combobox(root, textvariable=benzin_var, values=("AI92", "AI95", "AI98", "dizel"), state="readonly")
-combo.grid(row=1, column=1, padx=5)
+combo.place(x=97,y=80)
 combo.bind("<<ComboboxSelected>>", benzin_secimi_et)
 
-tk.Label(root, text="Qiymet").grid(row=2, column=0, padx=5, pady=2)
-tk.Entry(root, textvariable=entry_text1, state="disabled", width=16).grid(row=2, column=1)
+tk.Label(root, text="Qiymet").place(x=25,y=110)
+tk.Entry(root, textvariable=entry_text1, state="disabled", width=16).place(x=105,y=112)
 
-tk.Label(root, text="Benzin secimi",font=("Arial",12)).grid(row=3, column=0, columnspan=2, pady=5)
+tk.Label(root, text="Benzin secimi",font=("Arial",12)).place(x=27,y=40)
+tk.Radiobutton(root, text="Manat", variable=benzin_var1, value="Manat", command=manat_sec).place(x=20,y=160)
+tk.Entry(root, textvariable=entry_text2, width=10).place(x=125,y=165)
+tk.Label(root, text="AZN").place(x=230,y=165)
 
-tk.Radiobutton(root, text="Manat", variable=benzin_var1, value="Manat", command=manat_sec).grid(row=4, column=0)
-tk.Entry(root, textvariable=entry_text2, width=10).grid(row=4, column=1)
-tk.Label(root, text="AZN").grid(row=4, column=0,columnspan=6)
+tk.Radiobutton(root, text="Litr", variable=benzin_var1, value="Litr", command=litr_sec).place(x=25,y=190)
+tk.Entry(root, textvariable=entry_text3, width=10).place(x=125,y=194)
+tk.Label(root, text="L").place(x=230,y=194)
 
-tk.Radiobutton(root, text="Litr", variable=benzin_var1, value="Litr", command=litr_sec).grid(row=5, column=0)
-tk.Entry(root, textvariable=entry_text3, width=10).grid(row=5, column=1)
-tk.Label(root, text="L").grid(row=5, column=0,columnspan=6)
+tk.Button(root, text="Petrol Hesabla", command=cafe.hesablaz).place(x=100,y=250)
+tk.Label(root, textvariable=label_text).place(x=100,y=332)
 
-tk.Button(root, text="Petrol Hesabla", command=cafe.hesablaz).grid(row=6, column=1, pady=5)
-tk.Label(root, textvariable=label_text).grid(row=7, column=1, pady=5)
+tk.Label(root, text="Kafe Hesabla", font=("Arial", 12)).place(x=600,y=60)
 
-tk.Label(root, text="Kafe Hesabla", font=("Arial", 12)).grid(row=8, column=0, pady=10)
+tk.Label(root, text="Mehsul").place(x=600,y=100)
+tk.Label(root, text="Qiymet").place(x=740,y=100)
+tk.Label(root, text="Eded").place(x=880,y=100)
 
-tk.Label(root, text="Mehsul").grid(row=9, column=0)
-tk.Label(root, text="Qiymet").grid(row=9, column=1)
-tk.Label(root, text="Eded").grid(row=9, column=2)
+tk.Checkbutton(root, text="Hot-Dog", variable=hot_have,command=check_select).place(x=600,y=130)
+tk.Entry(root, textvariable=hot_text, state="disabled", width=10).place(x=740,y=133)
+button1 = tk.Entry(root, textvariable=label_text1, width=10)
+button1.place(x=880,y=132)
 
-tk.Checkbutton(root, text="Hot-Dog", variable=hot_have).grid(row=10, column=0)
-tk.Entry(root, textvariable=hot_text, state="disabled", width=10).grid(row=10, column=1)
-tk.Entry(root, textvariable=label_text1, width=10).grid(row=10, column=2)
-tk.Checkbutton(root, text="Burger", variable=burger_have).grid(row=11, column=0)
-tk.Entry(root, textvariable=burger_text, state="disabled", width=10).grid(row=11, column=1)
-tk.Entry(root, textvariable=label_text2, width=10).grid(row=11, column=2)
+tk.Checkbutton(root, text="Burger", variable=burger_have,command=check_select).place(x=600,y=160)
+tk.Entry(root, textvariable=burger_text, state="disabled", width=10).place(x=740,y=163)
+button2 = tk.Entry(root, textvariable=label_text2, width=10)
+button2.place(x=880,y=162)
 
-tk.Checkbutton(root, text="Kartof-Fri", variable=kartof_have).grid(row=12, column=0)
-tk.Entry(root, textvariable=kartof_text, state="disabled", width=10).grid(row=12, column=1)
-
-tk.Entry(root, textvariable=label_text3, width=10).grid(row=12, column=2)
-
-tk.Checkbutton(root, text="Coca-Cola", variable=cola_have).grid(row=13, column=0)
-tk.Entry(root, textvariable=cola_text, state="disabled", width=10).grid(row=13, column=1)
-tk.Entry(root, textvariable=label_text4, width=10).grid(row=13, column=2)
-
-tk.Button(root, text="Kafe Hesabla", command=hesablak).grid(row=14, column=1, pady=10)
-tk.Label(root, textvariable=netice_text).grid(row=15, column=1)
+tk.Checkbutton(root, text="Kartof-Fri", variable=kartof_have,command=check_select).place(x=600,y=190)
+tk.Entry(root, textvariable=kartof_text, state="disabled", width=10).place(x=740,y=193)
 
 
+button3 = tk.Entry(root, textvariable=label_text3, width=10,)
+button3.place(x=880,y=192)
 
-tk.Button(root, text="Umumi hesabla", command=hesabla_ve_goster).grid(row=16, column=1, pady=15)
+tk.Checkbutton(root, text="Coca-Cola", variable=cola_have,command=check_select).place(x=600,y=220)
+tk.Entry(root, textvariable=cola_text, state="disabled", width=10).place(x=740,y=223)
+button4 = tk.Entry(root, textvariable=label_text4, width=10)
+button4.place(x=880,y=222)
+
+tk.Button(root, text="Kafe Hesabla", command=hesablak).place(x=813,y=272)
+tk.Label(root, textvariable=netice_text).place(x=833,y=322)
+
+
+
+
+
+tk.Button(root, text="Umumi hesabla", command=hesabla_ve_goster).place(x=503,y=382)
 
 
 tk.mainloop()
