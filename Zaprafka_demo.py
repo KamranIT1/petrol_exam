@@ -293,32 +293,38 @@ def hesablak():
      messagebox.showinfo("Error","Eded daxil edin")
     sum_text = toplam_burger + toplam_cola + toplam_hotdog + toplam_kartof
     netice_text.set(f"{sum_text} AZN")
+
 def check_select():
-         if hot_have.get() == True:
-          button1.config(state="normal")
-          button2.config(state="disabled")
-          button3.config(state="disabled")
-          button4.config(state="disabled")
+    button1.config(state="disabled")
+    button2.config(state="disabled")
+    button3.config(state="disabled")
+    button4.config(state="disabled")
 
-         elif burger_have.get():
-          button2.config(state="normal")
-          button1.config(state="disabled")
-          button3.config(state="disabled")
-          button4.config(state="disabled")
     
-         elif kartof_have.get():
-          button3.config(state="normal")
-          button1.config(state="disabled")
-          button2.config(state="disabled")
-          button4.config(state="disabled")
+    if hot_have.get() == True:
+        button1.config(state="normal")
+        button3.config(state="disabled")  
+        button4.config(state="disabled")  
+        button2.config(state="disabled") 
 
-         elif cola_have.get():
-          button4.config(state="normal")
-          button1.config(state="disabled")
-          button2.config(state="disabled")
-          button3.config(state="disabled")
+    elif burger_have.get() == True:
+        button2.config(state="normal")  
+        button1.config(state="disabled")  
+        button3.config(state="disabled") 
+        button4.config(state="disabled") 
 
-        
+    elif kartof_have.get() == True:
+        button3.config(state="normal")
+        button4.config(state="disabled")  
+        button2.config(state="disabled") 
+        button1.config(state="disabled") 
+    elif cola_have.get() == True:
+        button4.config(state="normal") 
+        button3.config(state="disabled")  
+        button2.config(state="disabled") 
+        button1.config(state="disabled")  
+
+
 
 
 
@@ -407,6 +413,7 @@ def hesabla_ve_goster():
 
 
 
+
 tk.Label(root, text="Benzin").place(x=27,y=80)
 combo = ttk.Combobox(root, textvariable=benzin_var, values=("AI92", "AI95", "AI98", "dizel"), state="readonly")
 combo.place(x=97,y=80)
@@ -433,24 +440,29 @@ tk.Label(root, text="Mehsul").place(x=600,y=100)
 tk.Label(root, text="Qiymet").place(x=740,y=100)
 tk.Label(root, text="Eded").place(x=880,y=100)
 
-tk.Checkbutton(root, text="Hot-Dog", variable=hot_have,command=check_select).place(x=600,y=130)
+hotdog_btn = tk.Checkbutton(root, text="Hot-Dog", variable=hot_have,command=check_select)
+hotdog_btn.place(x=600,y=130)
+
 tk.Entry(root, textvariable=hot_text, state="disabled", width=10).place(x=740,y=133)
 button1 = tk.Entry(root, textvariable=label_text1, width=10)
 button1.place(x=880,y=132)
 
-tk.Checkbutton(root, text="Burger", variable=burger_have,command=check_select).place(x=600,y=160)
+burger_btn = tk.Checkbutton(root, text="Burger", variable=burger_have,command=check_select)
+burger_btn.place(x=600,y=160)
 tk.Entry(root, textvariable=burger_text, state="disabled", width=10).place(x=740,y=163)
 button2 = tk.Entry(root, textvariable=label_text2, width=10)
 button2.place(x=880,y=162)
 
-tk.Checkbutton(root, text="Kartof-Fri", variable=kartof_have,command=check_select).place(x=600,y=190)
+kartof_btn = tk.Checkbutton(root, text="Kartof-Fri", variable=kartof_have,command=check_select)
+kartof_btn.place(x=600,y=190)
 tk.Entry(root, textvariable=kartof_text, state="disabled", width=10).place(x=740,y=193)
 
 
 button3 = tk.Entry(root, textvariable=label_text3, width=10,)
 button3.place(x=880,y=192)
 
-tk.Checkbutton(root, text="Coca-Cola", variable=cola_have,command=check_select).place(x=600,y=220)
+cola_btn = tk.Checkbutton(root, text="Coca-Cola", variable=cola_have,command=check_select)
+cola_btn.place(x=600,y=220)
 tk.Entry(root, textvariable=cola_text, state="disabled", width=10).place(x=740,y=223)
 button4 = tk.Entry(root, textvariable=label_text4, width=10)
 button4.place(x=880,y=222)
